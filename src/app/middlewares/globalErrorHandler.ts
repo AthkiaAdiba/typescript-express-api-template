@@ -1,31 +1,26 @@
-import type { ErrorRequestHandler } from "express";
-import { ZodError } from "zod";
-import AppError from "../errors/AppError";
-import type { TErrorSources } from "../interface/error";
-import config from "../config";
+import type { ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
+import AppError from '../errors/AppError';
+import type { TErrorSources } from '../interface/error';
+import config from '../config';
 
-const globalErrorHandler: ErrorRequestHandler = (
-  err,
-  _req,
-  res,
-  _next,
-) => {
+const globalErrorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   let statusCode = 500;
-  let message = "Something went wrong!";
+  let message = 'Something went wrong!';
 
   let errorSources: TErrorSources = [
     {
-      path: "",
-      message: "Something went wrong!",
+      path: '',
+      message: 'Something went wrong!',
     },
   ];
 
   if (err instanceof ZodError) {
     statusCode = 400;
-    message = "Validation failed";
+    message = 'Validation failed';
 
     errorSources = err.issues.map((issue) => ({
-      path: issue.path.join("."),
+      path: issue.path.join('.'),
       message: issue.message,
     }));
   } else if (err instanceof AppError) {
@@ -34,7 +29,7 @@ const globalErrorHandler: ErrorRequestHandler = (
 
     errorSources = [
       {
-        path: "",
+        path: '',
         message: err.message,
       },
     ];
@@ -43,7 +38,7 @@ const globalErrorHandler: ErrorRequestHandler = (
 
     errorSources = [
       {
-        path: "",
+        path: '',
         message: err.message,
       },
     ];
@@ -53,7 +48,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     success: false,
     message,
     errorSources,
-    stack: config.nodeEnv === "development" ? err?.stack : null,
+    stack: config.nodeEnv === 'development' ? err?.stack : null,
   });
 };
 
