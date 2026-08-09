@@ -1,20 +1,19 @@
-import express from "express"
-import router from "./app/routes"
-import globalErrorHandler from "./app/middlewares/globalErrorHandler"
-import notFound from "./app/middlewares/notFound"
+import express from 'express';
+import router from './app/routes';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import notFound from './app/middlewares/notFound';
 
-const app = express()
+const app = express();
 
 // Middlewares
-app.use(express.json())
-app.use("/api", router)
+app.use(express.json());
+app.use('/api', router);
 
-
-app.get("/", (_req, res) => {
-    res.send("GenAI Study Buddy server is running!")
-})
+app.get('/', (_req, res) => {
+  res.send('GenAI Study Buddy server is running!');
+});
 
 app.use(notFound);
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 
 export default app;
